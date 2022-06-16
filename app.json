@@ -1,5 +1,6 @@
 {
   "expo": {
+    "owner": "tzouras",
     "name": "my-react-native-project-labbtre",
     "slug": "my-react-native-project-labbtre",
     "version": "1.0.0",
@@ -14,9 +15,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
