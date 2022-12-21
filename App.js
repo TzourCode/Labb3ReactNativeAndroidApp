@@ -1,206 +1,187 @@
-import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  TextInput,
-  View,
-  FlatList,
-  ActivityIndicator,
-  Linking,
-  BrowserRouter,
-  Routes,
-  Route,
-  Link,
-} from "react-native-dom";
-import About from "./views/About";
-import Contact from "./views/Contact";
-import Home from "./views/Home";
-import { Text, Card, Title, Paragraph } from "react-native-paper";
-import { React, useEffect, useState } from "react";
+import AstronautList from './Astronauts'
+import { StyleSheet, View, Linking, Button } from 'react-native'
+import { Text } from 'react-native-paper'
+import { React } from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 export default function App() {
-  const [isLoading, setLoading] = useState(true);
-  const [asnauData, asData] = useState([]);
-  const [count, setCount] = useState([]);
-  const [text, onChangeText] = useState("");
-  // eslint-disable-next-line no-unused-vars
-  const [image, setImage] = useState(null);
+  const Stack = createNativeStackNavigator()
 
-  useEffect(() => {
-    fetch(`https://lldev.thespacedevs.com/2.2.0/astronaut/?search=${text}`)
-      .then((response) => response.json())
-      .then((data) => {
-        asData(data.results);
-      })
+  function HomeScreen({ navigation }) {
+    return (
+      <>
+        <View style={styles.homescreen}>
+          <Text style={styles.astronauttext}>
+            This is a list of information and pictures of people who have been
+            in space!!
+          </Text>
+          <Button
+            title="Click me to go to Astronaut list"
+            onPress={() => navigation.navigate('Astronaut list')}
+          />
+          <Text style={styles.fingers}>
+            👇 👇 👇 👇 👇 👇 👇 👇 👇 👇 👇 👇
+          </Text>
+          <Text
+            style={styles.spacenews}
+            onPress={() => Linking.openURL('https://spacenews.com/')}
+          >
+            Click here too check out the latest space news!!!
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            flexGrow: 0.01,
+          }}
+        >
+          <View
+            style={{
+              width: 180,
+              height: 180,
+              backgroundColor: 'red',
+              flexGrow: 1,
+            }}
+          >
+            <Text style={{ color: 'white', fontSize: 20 }}>
+              One million Earths could fit inside the Sun – and the Sun is
+              considered an average-size star.
+            </Text>
+          </View>
+          <View
+            style={{
+              width: 180,
+              height: 180,
+              backgroundColor: 'green',
+              flexGrow: 1,
+            }}
+          >
+            <Text style={{ color: 'white', fontSize: 14.5, marginLeft: 5 }}>
+              For years it was believed that Earth was the only planet in our
+              solar system with liquid water. More recently, NASA revealed its
+              strongest evidence yet that there is intermittent running water on
+              Mars, too!
+            </Text>
+          </View>
+          <View
+            style={{
+              width: 180,
+              height: 180,
+              backgroundColor: 'purple',
+              flexGrow: 1,
+            }}
+          >
+            <Text style={{ color: 'white', fontSize: 18 }}>
+              Comets are leftovers from the creation of our solar system about
+              4.5 billion years ago – they consist of sand, ice and carbon
+              dioxide.
+            </Text>
+          </View>
 
-      .catch((error) => alert(error))
-      .then(() => setLoading(false));
-  }, [text]);
+          <View
+            style={{
+              width: 180,
+              height: 180,
+              backgroundColor: 'yellow',
+              flexGrow: 1,
+            }}
+          >
+            <Text style={{ color: 'black', fontSize: 20, marginLeft: 5 }}>
+              You wouldn’t be able to walk on Jupiter, Saturn, Uranus or Neptune
+              because they have no solid surface!
+            </Text>
+          </View>
 
-  useEffect(() => {
-    fetch("https://lldev.thespacedevs.com/2.2.0/astronaut/")
-      .then((response) => response.json())
-      .then((data) => {
-        setCount(data.count);
-        setImage(data.profile_image);
-      })
+          <View
+            style={{
+              width: 180,
+              height: 180,
+              backgroundColor: 'pink',
+              flexGrow: 1,
+            }}
+          >
+            <Text
+              style={{
+                color: 'black',
+                fontSize: 22,
+              }}
+            >
+              If you could fly a plane to Pluto, the trip would take more than
+              800 years!
+            </Text>
+          </View>
 
-      .catch((error) => alert(error))
-      .then(() => setLoading(false));
-  }, []);
+          <View
+            style={{
+              width: 180,
+              height: 180,
+              backgroundColor: 'blue',
+              flexGrow: 1,
+            }}
+          >
+            <Text style={{ color: 'white', fontSize: 16, marginLeft: 5 }}>
+              The highest mountain known to man is on an asteroid called Vesta.
+              Measuring a whopping 22km in height, it is three times as tall as
+              Mount Everest!
+            </Text>
+          </View>
+        </View>
+      </>
+    )
+  }
 
   return (
-    (
-      <BrowserRouter>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Hem</Link>
-            </li>
-            <li>
-              <Link to="/about">Om oss</Link>
-            </li>
-            <li>
-              <Link to="/contact">Kontakt</Link>
-            </li>
-          </ul>
-        </nav>
-        <Routes>
-          <Route element={<Home />} path="/" />
-          <Route element={<About />} path="/about" />
-          <Route element={<Contact />} path="/contact" />
-        </Routes>
-      </BrowserRouter>
-    ),
-    (
-      <View style={styles.container}>
-        <Text style={styles.count}>
-          This is how many astronauts there have been until now in space,{" "}
-          {count} persons amazing!
-        </Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangeText}
-          value={text}
-          placeholder={"Type in the name of a astronaut"}
-        ></TextInput>
-        {isLoading ? (
-          <ActivityIndicator />
-        ) : (
-          <FlatList
-            data={asnauData}
-            keyExtractor={({ id }) => id}
-            renderItem={({ item }) => {
-              return (
-                <Text style={styles.astronauts}>
-                  Name: {item.name} {"\n"}
-                  Date of birth: {item.date_of_birth}
-                  {"\n"}
-                  {item.date_of_death === null
-                    ? "Date of death: Still alive and using his body made of stardust!!!"
-                    : item.date_of_death}
-                  {"\n"}Status of occupation: {item.status.name} Worked for the{" "}
-                  {item.type.name}
-                  {"\n"}Nationality: {item.nationality}
-                  {"\n"}First flight: {item.first_flight} {"\n"}Last flight:{" "}
-                  {item.last_flight} {"\n"}
-                  <Text
-                    style={styles.wiki}
-                    onPress={() => Linking.openURL(item.wiki)}
-                  >
-                    Wikipidea link: {item.wiki}
-                  </Text>
-                  {"\n"}
-                  <Text
-                    style={styles.twit}
-                    onPress={() => Linking.openURL(item.twitter)}
-                  >
-                    Twitter link: {item.twitter}
-                  </Text>
-                  {"\n"}
-                  <Text
-                    style={styles.insta}
-                    onPress={() => Linking.openURL(item.instagram)}
-                  >
-                    Instagram link: {item.instagram}
-                  </Text>
-                  {"\n"}
-                  <Card>
-                    <Card.Content>
-                      <Title>Biography:</Title>
-                      <Paragraph style={styles.card}>{item.bio}</Paragraph>
-                    </Card.Content>
-                    <Card.Cover
-                      style={styles.imag}
-                      placeholder="Picture of Astronaut"
-                      maxWidth={100}
-                      source={{ uri: item.profile_image }}
-                    />
-                  </Card>
-                </Text>
-              );
-            }}
-          />
-        )}
-
-        <StatusBar style="auto" />
-        <Text style={styles.description}>Space beings AB</Text>
-      </View>
-    )
-  );
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            title: 'Home',
+            headerStyle: {
+              backgroundColor: '#AD6A05',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+        <Stack.Screen
+          name="Astronaut list"
+          component={AstronautList}
+          options={{
+            title: 'Go Home',
+            headerStyle: {
+              backgroundColor: '#001084',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
 }
 
 const styles = StyleSheet.create({
-  card: {
-    maxWidth: 400,
-  },
-  wiki: {
-    color: "white",
-    fontSize: 20,
-    fontWeight: "700",
-  },
-  twit: {
-    color: "blue",
-    fontSize: 20,
-    fontWeight: "700",
-  },
-  insta: {
-    color: "#E1306C",
-    fontSize: 20,
-    fontWeight: "700",
-  },
-  imag: {
-    paddingLeft: 148,
-    backgroundColor: "black",
-  },
-  container: {
+  homescreen: {
     flex: 1,
-    backgroundColor: "#0099ff",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 48,
+    alignItems: 'center',
+    backgroundColor: '#000000',
   },
-  astronauts: {
-    fontSize: 20,
-    fontWeight: "700",
-    backgroundColor: "#33cccc",
+  fingers: { marginTop: 15, marginBottom: -15 },
+  spacenews: {
+    color: '#686DFF',
+    marginTop: 15,
   },
-  count: {
-    fontSize: 25,
-    fontWeight: "bold",
+  astronauttext: {
+    color: '#FFFFFF',
+    marginTop: '1%',
+    marginBottom: '1%',
   },
-  description: {
-    textAlign: "center",
-    marginBottom: 18,
-    fontWeight: "bold",
-    fontSize: 15,
-    color: "black",
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderColor: "#ff0000",
-    backgroundColor: "#ffffff",
-  },
-});
+})
